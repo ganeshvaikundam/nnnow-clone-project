@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import { ExternalLink } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ProductCard } from "@/components/site/ProductCard";
 import { products } from "@/lib/products";
+import { openNamedTab, tabName } from "@/lib/tabs";
 
 const HERO_SLIDES = [
   {
@@ -81,7 +83,21 @@ const Index = () => {
         <h2 className="text-2xl font-bold text-center mb-6">SHOP BY CATEGORY</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {CATEGORY_TILES.map((c) => (
-            <Link key={c.label} to={c.to} className="group block">
+            <Link
+              key={c.label}
+              to={c.to}
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey) {
+                  e.preventDefault();
+                  openNamedTab(c.to, tabName(c.to));
+                }
+              }}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                openNamedTab(c.to, tabName(c.to));
+              }}
+              className="group block"
+            >
               <div className={`relative aspect-square overflow-hidden bg-gradient-to-br ${c.color}`}>
                 {c.img && (
                   <img src={c.img} alt={c.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -90,6 +106,19 @@ const Index = () => {
                 <span className="absolute bottom-4 left-4 text-white font-extrabold text-xl uppercase tracking-wider">
                   {c.label}
                 </span>
+                <button
+                  type="button"
+                  aria-label={`Open ${c.label} in new tab`}
+                  title="Open in new tab"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openNamedTab(c.to, tabName(c.to));
+                  }}
+                  className="absolute top-2 right-2 w-8 h-8 grid place-items-center bg-background/80 backdrop-blur rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </button>
               </div>
             </Link>
           ))}

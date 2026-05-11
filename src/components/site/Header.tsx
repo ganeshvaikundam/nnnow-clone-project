@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Search, ShoppingBag, User, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ShoppingBag, User } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { useState } from "react";
+import { SearchBox } from "@/components/site/SearchBox";
 
 const NAV = [
   { label: "SALE", to: "/c/sale", accent: true },
@@ -15,8 +15,6 @@ const NAV = [
 
 export const Header = () => {
   const { count } = useCart();
-  const nav = useNavigate();
-  const [q, setQ] = useState("");
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
@@ -41,21 +39,7 @@ export const Header = () => {
 
       {/* Main bar */}
       <div className="container grid grid-cols-[1fr_auto_1fr] items-center gap-6 py-4">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            nav(`/c/all?q=${encodeURIComponent(q)}`);
-          }}
-          className="flex items-center gap-2 border-b border-foreground/30 pb-1.5 max-w-md"
-        >
-          <Search className="w-5 h-5 text-brand-magenta" />
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search NNNOW"
-            className="bg-transparent outline-none w-full text-sm placeholder:text-foreground/50"
-          />
-        </form>
+        <SearchBox />
 
         <Link to="/" className="flex flex-col items-center leading-none">
           <span className="text-[28px] font-extrabold tracking-tight">

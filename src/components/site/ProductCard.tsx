@@ -1,13 +1,28 @@
-import { Heart } from "lucide-react";
+import { Heart, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Product, formatPrice } from "@/lib/products";
 import { useState } from "react";
+import { openNamedTab, tabName } from "@/lib/tabs";
 
 export const ProductCard = ({ product }: { product: Product }) => {
   const [hover, setHover] = useState(false);
+  const href = `/p/${product.id}`;
+  const openInNewTab = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openNamedTab(href, tabName(product.id));
+  };
   return (
     <Link
-      to={`/p/${product.id}`}
+      to={href}
+      onClick={(e) => {
+        // Plain click → SPA nav (let router handle). Cmd/Ctrl-click → named new tab.
+        if (e.metaKey || e.ctrlKey || e.button === 1) {
+          e.preventDefault();
+          openNamedTab(href, tabName(product.id));
+        }
+      }}
+      onContextMenu={openInNewTab}
       className="group block"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -24,13 +39,23 @@ export const ProductCard = ({ product }: { product: Product }) => {
             {product.off}% OFF
           </span>
         )}
-        <button
-          aria-label="Wishlist"
-          onClick={(e) => e.preventDefault()}
-          className="absolute top-2 right-2 w-8 h-8 grid place-items-center bg-background/80 backdrop-blur rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-        >
-          <Heart className="w-4 h-4" />
-        </button>
+        <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            aria-label="Wishlist"
+            onClick={(e) => e.preventDefault()}
+            className="w-8 h-8 grid place-items-center bg-background/80 backdrop-blur rounded-full"
+          >
+            <Heart className="w-4 h-4" />
+          </button>
+          <button
+            aria-label="Open in new tab"
+            title="Open in new tab"
+            onClick={openInNewTab}
+            className="w-8 h-8 grid place-items-center bg-background/80 backdrop-blur rounded-full"
+          >
+            <ExternalLink className="w-4 h-4" />
+          </button>
+        </div>
       </div>
       <div className="pt-3 px-1 pb-1">
         <p className="text-[13px] font-bold uppercase tracking-wide truncate">{product.brand}</p>
