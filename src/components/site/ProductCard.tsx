@@ -1,7 +1,8 @@
-import { Heart } from "lucide-react";
+import { Heart, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Product, formatPrice } from "@/lib/products";
 import { useState } from "react";
+import { openNamedTab, tabName } from "@/lib/tabs";
 
 export const ProductCard = ({ product }: { product: Product }) => {
   const [hover, setHover] = useState(false);
