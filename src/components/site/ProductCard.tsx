@@ -6,9 +6,24 @@ import { openNamedTab, tabName } from "@/lib/tabs";
 
 export const ProductCard = ({ product }: { product: Product }) => {
   const [hover, setHover] = useState(false);
+  const href = `/p/${product.id}`;
+  const openInNewTab = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openNamedTab(href, tabName(product.id));
+  };
   return (
     <Link
-      to={`/p/${product.id}`}
+      to={href}
+      target={tabName(product.id)}
+      onClick={(e) => {
+        // Plain click → SPA nav (let router handle). Cmd/Ctrl-click → named new tab.
+        if (e.metaKey || e.ctrlKey || e.button === 1) {
+          e.preventDefault();
+          openNamedTab(href, tabName(product.id));
+        }
+      }}
+      onContextMenu={openInNewTab}
       className="group block"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
