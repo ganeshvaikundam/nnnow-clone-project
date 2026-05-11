@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import { ExternalLink } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ProductCard } from "@/components/site/ProductCard";
 import { products } from "@/lib/products";
+import { openNamedTab, tabName } from "@/lib/tabs";
 
 const HERO_SLIDES = [
   {
