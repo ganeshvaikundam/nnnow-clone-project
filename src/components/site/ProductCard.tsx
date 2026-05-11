@@ -15,7 +15,6 @@ export const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Link
       to={href}
-      target={tabName(product.id)}
       onClick={(e) => {
         // Plain click → SPA nav (let router handle). Cmd/Ctrl-click → named new tab.
         if (e.metaKey || e.ctrlKey || e.button === 1) {
