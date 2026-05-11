@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Search, ShoppingBag, User, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ShoppingBag, User } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { useState } from "react";
+import { SearchBox } from "@/components/site/SearchBox";
 
 const NAV = [
   { label: "SALE", to: "/c/sale", accent: true },
